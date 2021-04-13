@@ -1,4 +1,3 @@
-#pragma once
 #include "Ram.hpp"
 #include <random>
 #define MAX_RAM_SIZE 1040
@@ -37,3 +36,7 @@ Ram::Ram(int size, int * array) {
         ram[i] = array[i]; 
     } 
 }
+
+int Ram::operator[](int address) {
+    return ram[address]; 
+} 
