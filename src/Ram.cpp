@@ -33,11 +33,3 @@ Ram::Ram(int size, std::string filePath) {
 int Ram::operator[](int index) {
     return ram[index]; 
 }
-
-std::ostream& operator<<(std::ostream& out, Ram& ramO) {
-    out << "Address\tData\n";
-    for(int i = 0; i < ramO.size; i++) {
-        out << i << '\t' << ramO[i] << '\n'; 
-    }
-    return out; 
-}

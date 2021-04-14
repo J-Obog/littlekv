@@ -1,11 +1,13 @@
 #pragma once 
-#include "LRUCache.hpp"
+//#include "LRUCache.hpp"
 
 class CacheBlock {
 friend class LRUCache; 
 private:
-    int data, address; 
-    CacheBlock* next = nullptr, *prev = nullptr; 
+    int data; 
+    int address; 
+    CacheBlock* next = nullptr;
+    CacheBlock* prev = nullptr; 
 
 public:
     CacheBlock(int addr, int dat);

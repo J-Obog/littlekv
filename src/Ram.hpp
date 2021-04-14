@@ -13,5 +13,4 @@ public:
     Ram(std::string fp); 
     Ram(int sz, std::string fp);
     int operator[] (int idx);
-    friend std::ostream& operator<<(std::ostream& out, Ram& r);
 };
