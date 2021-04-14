@@ -1,21 +1,21 @@
 #pragma once 
 #include "CacheBlock.hpp"
-#include "Ram.hpp"
-#include <iostream>
 
 class LRUCache {
 private:
-    int size, lines = 0, hits = 0, misses = 0; 
-    CacheBlock ** cache;
+    int size, curr, hits, misses; 
+    CacheBlock * head, tail;
 
 public:
     LRUCache();
-    LRUCache(int size);
-    
+    LRUCache(int sz);
+    //LRUCache(std::string fn); 
+    //LRUCache(int sz, std::string fn); 
     CacheBlock * leastRecentlyUsed(); 
-    CacheBlock * readFromCache(int address); 
-    void writeToCache(int address, int data);
+    CacheBlock * readFromCache(int addr); 
+    double hitRatio(); 
+    void writeToCache(int addr, int dat);
     bool isEmpty();
     bool isFull(); 
-    friend std::ostream& operator<<(std::ostream& out, LRUCache& cacheo);
+    friend std::ostream& operator<<(std::ostream& out, LRUCache& cacheO);
 };

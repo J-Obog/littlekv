@@ -1,5 +1,4 @@
 #include "LRUCache.hpp"
-#define MAX_CACHE_SIZE 256
 
 LRUCache::LRUCache() {
     size = MAX_CACHE_SIZE; 
@@ -13,19 +12,23 @@ LRUCache::LRUCache(int size) {
 
 void LRUCache::writeToCache(int address, int data) {
     if(!isFull()) {
-        cache[++lines] = new CacheBlock(address, data); 
+        cache[++curr] = new CacheBlock(address, data); 
     } else {
         CacheBlock * lh = leastRecentlyUsed(); 
         lh = new CacheBlock(address, data);  
     }
 }
 
+double LRUCache::hitRatio() {
+    return hits / (double)(hits + misses); 
+}
+
 bool LRUCache::isFull() {
-    return lines == (size - 1); 
+    return curr == (size - 1); 
 }
 
 bool LRUCache::isEmpty() {
-    return lines == 0; 
+    return curr == 0; 
 }
 
 CacheBlock * LRUCache::readFromCache(int address) {
@@ -50,11 +53,13 @@ CacheBlock * LRUCache::leastRecentlyUsed() {
     return lh; 
 }
 
-std::ostream& operator<<(std::ostream& out, LRUCache& cacheo) {
-    out << "Line#\tAddress\tData\tHits";
-    for(int i = 0; i < cacheo.size; i++) {
-        out << i << '\t' << cacheo.cache[i]->getAddress() 
-        << '\t' << cacheo.cache[i]->getData() << '\t' << cacheo.cache[i]->getHitCounter() << '\n'; 
+std::ostream& operator<<(std::ostream& out, LRUCache& cacheO) {
+    const double hr = cacheO.hitRatio(); 
+    out << "Hit Ratio: " << hr << '\n';
+    out << "Miss Ratio: " << (1 - hr) << '\n';
+    out << "Content ..." << '\n'; 
+    for(int i = 0; i < cacheO.size; i++) {
+        out << "[" << i << "]: " << cacheO;  
     }   
     return out;
 }

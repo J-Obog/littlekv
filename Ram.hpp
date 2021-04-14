@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
-#define MAX_RAM_SIZE 512
+#define DEFAULT_RAM_SIZE 512
 
 class Ram {
 private:
@@ -9,7 +9,9 @@ private:
     int * ram; 
 
 public:
+    Ram();
     Ram(std::string fp); 
+    Ram(int sz, std::string fp);
     int operator[] (int idx);
     friend std::ostream& operator<<(std::ostream& out, Ram& r);
 };
