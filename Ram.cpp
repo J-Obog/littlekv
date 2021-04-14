@@ -1,53 +1,25 @@
 #include "Ram.hpp"
-#include <random>
-#include <ctime>
-#define MAX_RAM_SIZE 1040
-#define MIN_DATA_VAL -2147483647
-#define MAX_DATA_VAL 2147483646
+#include <fstream>
 
+Ram::Ram(std::string filePath) {
+    size = MAX_RAM_SIZE;
+    ram = new int[MAX_RAM_SIZE]; 
 
-int randNum(int a, int b) {
-    std::default_random_engine generator(time(0));
-    std::uniform_int_distribution<int> distribution(a, b);
-    return distribution(generator);
+    std::ifstream ramFile(filePath); 
+    int c = 0; 
+
+    while(ramFile >> ram[c])
+        c++; 
 }
 
-Ram::Ram() {
-    size = MAX_RAM_SIZE; 
-    ram = new int[size]; 
+int Ram::operator[](int index) {
+    return ram[index]; 
+}
 
-    for(int i = 0; i < size; i++) {
-        ram[i] = randNum(MIN_DATA_VAL, MAX_DATA_VAL); 
+std::ostream& operator<<(std::ostream& out, Ram& ramO) {
+    out << "Address\tData\n";
+    for(int i = 0; i < ramO.size; i++) {
+        out << i << '\t' << ramO[i] << '\n'; 
     }
-}
-
-Ram::Ram(int size) {
-    this->size = size; 
-    ram = new int[size]; 
-
-    for(int i = 0; i < size; i++) {
-        ram[i] = randNum(MIN_DATA_VAL, MAX_DATA_VAL); 
-    }
-}
-
-Ram::Ram(int size, int * array) {
-    this->size = size; 
-    ram = new int[size]; 
-
-    for(int i = 0; i < size; i++) {
-        ram[i] = array[i]; 
-    } 
-}
-
-int Ram::operator[](int address) {
-    return ram[address]; 
-} 
-
-std::ostream& operator<<(std::ostream& out, Ram& ramref) {
-    out << "Address\tData";
-    for(int i = 0; i < ramref.size; i++) {
-        out << i << "\t" << ramref[i] << "\n"; 
-    }
-
-    return out;
+    return out; 
 }
