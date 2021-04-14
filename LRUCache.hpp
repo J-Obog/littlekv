@@ -1,21 +1,22 @@
 #pragma once 
 #include "CacheBlock.hpp"
+#include <iostream>
+#define MAX_CACHE_SIZE 128
 
 class LRUCache {
 private:
-    int size, curr, hits, misses; 
-    CacheBlock * head, tail;
+    int maxSize, currSize = 0, hitCount = 0, missCount = 0; 
+    CacheBlock* startBlock = nullptr, *endBlock = nullptr;
+    CacheBlock* search(int addr); 
+    void updateLRU(CacheBlock* cb); 
+    void writeNewBlock(CacheBlock* cb); 
 
 public:
-    LRUCache();
-    LRUCache(int sz);
-    //LRUCache(std::string fn); 
-    //LRUCache(int sz, std::string fn); 
-    CacheBlock * leastRecentlyUsed(); 
-    CacheBlock * readFromCache(int addr); 
-    double hitRatio(); 
-    void writeToCache(int addr, int dat);
-    bool isEmpty();
+    LRUCache(); 
+    LRUCache(int msz);
+    void setMaxSize(int msz); 
+    void read(int addr, int dat); 
+    void printContent(); 
+    bool isEmpty(); 
     bool isFull(); 
-    friend std::ostream& operator<<(std::ostream& out, LRUCache& cacheO);
 };

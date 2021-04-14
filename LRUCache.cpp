@@ -1,65 +1,88 @@
 #include "LRUCache.hpp"
 
 LRUCache::LRUCache() {
-    size = MAX_CACHE_SIZE; 
-    cache = new CacheBlock * [MAX_CACHE_SIZE];  
+    maxSize = MAX_CACHE_SIZE;
 }
 
-LRUCache::LRUCache(int size) {
-    this->size = size; 
-    cache = new CacheBlock * [size];  
+LRUCache::LRUCache(int sz) {
+    maxSize = sz;
 }
 
-void LRUCache::writeToCache(int address, int data) {
-    if(!isFull()) {
-        cache[++curr] = new CacheBlock(address, data); 
-    } else {
-        CacheBlock * lh = leastRecentlyUsed(); 
-        lh = new CacheBlock(address, data);  
+CacheBlock* LRUCache::search(int addr) {
+    CacheBlock * tmp = startBlock; 
+    while(tmp != nullptr && tmp->address != addr) {
+        tmp = tmp->next; 
+    }
+    return tmp; 
+}
+void LRUCache::printContent() {
+    CacheBlock* tmp = startBlock; 
+    int c = 0; 
+    while(tmp != nullptr) {
+        std::cout << "[" << c << "]" << std::endl;  
+        tmp = tmp->next; 
+        c++; 
     }
 }
 
-double LRUCache::hitRatio() {
-    return hits / (double)(hits + misses); 
+void LRUCache::read(int addr, int dat) {
+    CacheBlock* q = search(addr); 
+    if(q != nullptr) {
+        updateLRU(q);
+    } else {
+        CacheBlock* cb = new CacheBlock(addr, dat); 
+        writeNewBlock(cb);
+    }
 }
 
+void LRUCache::writeNewBlock(CacheBlock* cb) {
+    if(isEmpty()) {
+        currSize++;
+        startBlock = cb; 
+        endBlock = cb; 
+        return; 
+    }
+
+    if(isFull()) {
+        endBlock = endBlock->prev;
+        delete endBlock->next;
+        startBlock->prev = cb; 
+        cb->next = startBlock; 
+        return; 
+    }
+
+    currSize++; 
+    startBlock->prev = cb; 
+    cb->next = startBlock; 
+    startBlock = cb; 
+}
+
+void LRUCache::updateLRU(CacheBlock* cb) {
+    if(currSize > 1) {
+        if(cb == endBlock) {
+            cb->prev->next = nullptr; 
+            endBlock = cb->prev; 
+            cb->prev = nullptr; 
+            cb->next = startBlock;
+            startBlock = cb; 
+            return; 
+        }
+        if(cb != startBlock) {
+            cb->prev->next = cb->next; 
+            cb->next->prev = cb->prev; 
+            cb->prev = nullptr; 
+            cb->next = startBlock;
+            startBlock = cb; 
+        }
+    }
+}
+
+
 bool LRUCache::isFull() {
-    return curr == (size - 1); 
+    return currSize == (maxSize - 1); 
 }
 
 bool LRUCache::isEmpty() {
-    return curr == 0; 
+    return currSize = 0; 
 }
 
-CacheBlock * LRUCache::readFromCache(int address) {
-    for(int i = 0; i < size; i++) {
-        if(cache[i]->getAddress() == address) {
-            return cache[i]; 
-        }
-    }
-    return nullptr; 
-}
-
-CacheBlock * LRUCache::leastRecentlyUsed() {
-    if(isEmpty()) {
-        return nullptr; 
-    }
-    CacheBlock * lh = cache[0]; 
-    for(int i = 0; i < size; i++) {
-        if(cache[i]->getHitCounter() < lh->getHitCounter()) {
-            lh = cache[i];  
-        }    
-    }
-    return lh; 
-}
-
-std::ostream& operator<<(std::ostream& out, LRUCache& cacheO) {
-    const double hr = cacheO.hitRatio(); 
-    out << "Hit Ratio: " << hr << '\n';
-    out << "Miss Ratio: " << (1 - hr) << '\n';
-    out << "Content ..." << '\n'; 
-    for(int i = 0; i < cacheO.size; i++) {
-        out << "[" << i << "]: " << cacheO;  
-    }   
-    return out;
-}
