@@ -17,7 +17,6 @@ private:
 public:
     LRUCache(); 
     LRUCache(int msz);
-    void printCache(); 
     void setMaxSize(int msz); 
     void read(int addr, int dat);
     int getHitCount(); 

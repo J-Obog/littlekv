@@ -47,14 +47,6 @@ void LRUCache::read(int addr, int dat) {
     }
 }
 
-void LRUCache::printCache() {
-    CacheBlock* p = start; 
-    while(start != nullptr) {
-        std::cout << p->address << " " << p->data << std::endl; 
-        p = p->next; 
-    }
-}
-
 void LRUCache::write(int addr, int dat) {
     CacheBlock* cb = new CacheBlock(addr, dat); 
     cb->next = start; 
