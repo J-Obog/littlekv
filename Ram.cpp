@@ -1,11 +1,13 @@
 #include "Ram.hpp"
 #include <random>
+#include <ctime>
 #define MAX_RAM_SIZE 1040
 #define MIN_DATA_VAL -2147483647
 #define MAX_DATA_VAL 2147483646
 
+
 int randNum(int a, int b) {
-    std::default_random_engine generator;
+    std::default_random_engine generator(time(0));
     std::uniform_int_distribution<int> distribution(a, b);
     return distribution(generator);
 }
@@ -40,3 +42,12 @@ Ram::Ram(int size, int * array) {
 int Ram::operator[](int address) {
     return ram[address]; 
 } 
+
+std::ostream& operator<<(std::ostream& out, Ram& ramref) {
+    out << "Address\tData";
+    for(int i = 0; i < ramref.size; i++) {
+        out << i << "\t" << ramref[i] << "\n"; 
+    }
+
+    return out;
+}

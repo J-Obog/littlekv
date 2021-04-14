@@ -2,31 +2,13 @@
 
 class CacheBlock {
 private:
-    int data;
-    int address;
-    int hitCounter; 
+    int data, address, hitCounter = 0; 
 
 public:
-    CacheBlock(int address, int data) {
-        this->address = address; 
-        this->data = data; 
-        hitCounter = 0; 
-    }
-
-    CacheBlock() {
-        address = -1; 
-        data = 0; 
-    }
-
-    int getData() {
-        return data; 
-    }
-
-    int getAddress() {
-        return address; 
-    }
-
-    void incrementHitCounter() {
-        hitCounter++; 
-    }
+    CacheBlock(int addr, int dat);
+    CacheBlock();
+    int getData(); 
+    int getAddress();
+    int getHitCounter(); 
+    void incrementHitCounter(); 
 };
