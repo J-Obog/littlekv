@@ -1,4 +1,4 @@
-#include "LRUCache.hpp"
+#include "cache.hpp"
 #include <iostream>
 #include <vector> 
 #include <algorithm>
@@ -7,28 +7,30 @@ using namespace std;
 
 
 int main() {
-  const int RAM_SIZE = 20;
-  const int READS = 100;
-
+  const int RAM_SIZE = 100;
+  const int READS = 50;
 
   vector<int> ram(RAM_SIZE);
   srand(time(0));
   std::generate(ram.begin(), ram.end(), rand);
 
-  LRUCache cache(50); 
-
+  Cache cache(5); 
+  cache.read(0, ram[0]); 
+  cache.read(1, ram[1]); 
+  cache.read(2, ram[2]); 
+  cache.read(3, ram[3]); 
+  /*
   for(int i = 0; i < READS; i++) {
     int ram_addr = rand() % (ram.size() - 1); 
-    cout << ram_addr << " " << ram[ram_addr] << endl; 
-    //cache.read(ram_addr, ram[ram_addr]); 
+    cache.read(ram_addr, ram[ram_addr]); 
   } 
-
-  cout << "Entries: " << cache.getCurrentSize() << endl; 
-  cout << "Capacity: " << cache.getMaxSize() << endl; 
-  cout << "Hits: " << cache.getHitCount() << endl;
-  cout << "Misses: " << cache.getMissCount() << endl; 
-  cout << "Hit Ratio: " << cache.getHitRatio() * 100 << "%" << endl; 
-  cout << "Miss Ratio: " << cache.getMissRatio() * 100 << "%" << endl;   
+*/
+  cout << "Entries: " << cache.entries() << endl; 
+  cout << "Capacity: " << cache.capacity() << endl; 
+  cout << "Hits: " << cache.hit_count() << endl;
+  cout << "Misses: " << cache.miss_count() << endl; 
+  cout << "Hit Ratio: " << cache.hit_ratio() * 100 << "%" << endl; 
+  cout << "Miss Ratio: " << cache.miss_ratio() * 100 << "%" << endl;   
 
   return 0; 
 }
