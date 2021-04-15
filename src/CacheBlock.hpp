@@ -9,6 +9,6 @@ private:
     CacheBlock* prev = nullptr; 
 
 public:
-    CacheBlock(int addr, int dat);
+    CacheBlock(int ramAddres, int addressData);
     CacheBlock();
 };

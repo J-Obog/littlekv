@@ -1,12 +1,11 @@
 #include "LRUCache.hpp"
-#include <iostream>
 
 LRUCache::LRUCache() {
     maxSize = MAX_CACHE_SIZE;
 }
 
-LRUCache::LRUCache(int sz) {
-    maxSize = sz;
+LRUCache::LRUCache(int maxCacheSize) {
+    maxSize = maxCacheSize;
 }
 
 int LRUCache::getHitCount() {
@@ -25,59 +24,39 @@ int LRUCache::getMaxSize() {
     return maxSize; 
 }
 
-void LRUCache::setMaxSize(int msz) {
-    if(!(msz < maxSize)) {
-        maxSize = msz; 
+void LRUCache::setMaxSize(int maxCacheSize) {
+    if(!(maxCacheSize < maxSize)) {
+        maxSize = maxCacheSize; 
     }
 }
 
-void LRUCache::read(int addr, int dat) {
-    CacheBlock * p = start; 
-    
-    while(p != nullptr && p->address != addr) {
-        p = p->next; 
-    }
-    
-    if(p != nullptr) {
-        hitCount++; 
-        updateLRU(p);
-    } else {
-        missCount++;
-        write(addr, dat);
-    }
+void LRUCache::popBlock() {
+    backBlock = backBlock->prev;
+    delete backBlock->next;   
+    currSize--; 
 }
 
-void LRUCache::write(int addr, int dat) {
-    CacheBlock* cb = new CacheBlock(addr, dat); 
-    cb->next = start; 
-    start = cb; 
-    if(isFull()) {
-        end = end->prev; 
-        delete end->next;
-        return; 
-    }
+void LRUCache::insertBlock(int ramAddress, int addressData) {
+    CacheBlock* newBlock = new CacheBlock(ramAddress, addressData);
+    newBlock->next = frontBlock; 
+    frontBlock->prev = newBlock; 
+    frontBlock = newBlock; 
     currSize++; 
 }
 
-void LRUCache::updateLRU(CacheBlock* cb) {
-    if(currSize > 1) {
-        if(cb == end) {
-            cb->prev->next = nullptr; 
-            end = cb->prev; 
-            cb->prev = nullptr; 
-            cb->next = start;
-            start = cb; 
-            return; 
-        }
-        if(cb != start) {
-            cb->prev->next = cb->next; 
-            cb->next->prev = cb->prev; 
-            cb->prev = nullptr; 
-            cb->next = start;
-            start = cb; 
-        }
+void LRUCache::moveToFront(CacheBlock* cacheBlock) {
+    if(cacheBlock == frontBlock)
+        return; 
+
+    if(cacheBlock == backBlock) {
+        backBlock = backBlock->prev; 
+        backBlock->next = nullptr; 
     }
-}
+
+    if(cacheBlock->next != nullptr) {
+        
+    }
+} 
 
 bool LRUCache::isFull() {
     return currSize == (maxSize - 1); 
