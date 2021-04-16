@@ -6,20 +6,20 @@ class Cache {
 private:
     int max_sz, curr_sz, hits, misses; 
     Block* front, *back;
-    void insertBlock(Block*); 
-    void moveToFront(Block*); 
-    
+    void to_front(Block*); 
+    void remove(Block*); 
+
 public:
     Cache(); 
     Cache(int);
-    void set_capacity(int); 
-    void read(int, int); 
+    void write(int, int);
+    Block* read(int);
+    /*
     int hit_count(); 
     int miss_count(); 
-    int entries(); 
+    int size(); 
     int capacity(); 
-    bool is_empty(); 
-    bool is_full(); 
     double hit_ratio(); 
     double miss_ratio();
+    */
 };

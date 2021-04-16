@@ -1,100 +1,72 @@
 #include "cache.hpp"
 
 Cache::Cache() {
+    max_sz = MAX_CACHE_SIZE; 
+    misses = hits = curr_sz = 0; 
     front = back = nullptr; 
-    max_sz = MAX_CACHE_SIZE;
-    hits = misses = curr_sz = 0;
-}
-
-Cache::Cache(int max) {
-    front = back = nullptr; 
-    max_sz = max;
-    hits = misses = curr_sz = 0;
-}
-
-int Cache::hit_count() {
-    return hits; 
-}
-
-int Cache::miss_count() {
-    return misses; 
 } 
 
-int Cache::entries() {
-    return curr_sz; 
+Cache::Cache(int size) {
+    max_sz = size; 
+    misses = hits = curr_sz = 0; 
+    front = back = nullptr;
 }
 
-int Cache::capacity() {
-    return max_sz; 
-}
-
-void Cache::set_capacity(int max) {
-    if(!(max < curr_sz)) {
-        max_sz = max; 
-    }
-}
-
-void Cache::insertBlock(Block* cb) {
-    if(is_empty()) {
-        front = cb; 
-        back = cb; 
+void Cache::remove(Block* b) { 
+    if(b->prev != nullptr) {
+        b->prev->next = b->next; 
     } else {
-        cb->next = front; 
-        front->prev = cb; 
-        front = cb; 
-        if(is_full()) {
+        front = b->next; 
+    }
+
+    if(b->next != nullptr) {
+        b->next->prev = b->prev; 
+    } else {
+        back = b->prev; 
+    }   
+}
+
+void Cache::to_front(Block* b) {
+    b->prev = nullptr;
+    b->next = front; 
+
+    if(front != nullptr)
+        front->prev = b; 
+
+    front = b; 
+
+    if(back == nullptr) 
+        back = b; 
+}
+
+void Cache::write(int address, int data) {
+    Block* b = read(address);
+
+    if(b != nullptr) {
+        b->data = data; 
+        remove(b);
+        to_front(b); 
+    } else {
+        Block* nb = new Block(address, data); 
+        if(curr_sz == max_sz) {
             back = back->prev; 
-            delete back->next; 
-            curr_sz--; 
+            delete back->next;     
+        } else {
+            curr_sz++; 
         }
+        to_front(nb);    
     }
-    curr_sz++; 
 }
 
-
-void Cache::moveToFront(Block* cb) {
-    if(cb->prev == nullptr) {
-        return; 
-    } else if(cb->next == nullptr) {
-        back = back->prev; 
-        back->next = nullptr;   
-    } else {
-        cb->prev->next = cb->next; 
-        cb->next->prev = cb->prev; 
-    }
-    
-    cb->next = front; 
-    front->prev = cb; 
-    cb->prev = nullptr;
-    front = cb; 
-} 
-
-void Cache::read(int address, int data) {
+Block* Cache::read(int address) {
     Block* itr = front; 
-    while(itr != nullptr) {
-        if(itr->address == address) {
-            hits++; 
-            moveToFront(itr); 
-            return; 
-        }
+
+    while(itr != nullptr && itr->address != address)
         itr = itr->next; 
-    }
-    misses++; 
-    insertBlock(new Block(address, data)); 
-}
-
-bool Cache::is_full() {
-    return curr_sz >= max_sz; 
-}
-
-bool Cache::is_empty() {
-    return curr_sz == 0; 
-}
-
-double Cache::hit_ratio() {
-    return hits / (double)(hits + misses); 
-}
-
-double Cache::miss_ratio() {
-    return misses / (double)(hits + misses); 
+    
+    if(itr != nullptr) {
+        remove(itr);
+        to_front(itr);  
+    } 
+    return itr; 
 }
