@@ -43,14 +43,18 @@ void Cache::write(int address, int data) {
     Block* b = read(address);
 
     if(b != nullptr) {
+        hits++; 
         b->data = data; 
         remove(b);
         to_front(b); 
     } else {
+        misses++; 
         Block* nb = new Block(address, data); 
         if(curr_sz == max_sz) {
-            back = back->prev; 
-            delete back->next;     
+            Block* tmp = back;
+            back = back->prev;
+            back->next = nullptr; 
+            delete tmp; 
         } else {
             curr_sz++; 
         }
@@ -65,8 +69,33 @@ Block* Cache::read(int address) {
         itr = itr->next; 
     
     if(itr != nullptr) {
+        hits++; 
         remove(itr);
         to_front(itr);  
     } 
-    return itr; 
+    return itr;
 }
+
+int Cache::hit_count() {
+    return hits; 
+}
+
+int Cache::miss_count() {
+    return misses; 
+} 
+
+int Cache::size() {
+    return curr_sz; 
+} 
+
+int Cache::capacity() {
+    return max_sz;     
+}
+
+double Cache::hit_ratio() {
+    return hits / (double) (hits + misses);
+}
+
+double Cache::miss_ratio() {
+  return misses / (double) (hits + misses);
+} 
