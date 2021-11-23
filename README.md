@@ -1,2 +1,3 @@
-# lru-cache
-C++ program that simulates caching using the Least Recently Used (LRU) replacement algorithm
+# Little KV
+
+A lightweight in-memory key-value store written in Python that utilizes websocketing for client-server communication
