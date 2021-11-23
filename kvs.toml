@@ -1,0 +1,7 @@
+[Connection]
+port = "9876"
+host = "localhost"
+
+[FileSys]
+filedir = "data"
+filename = "dump.kv"
