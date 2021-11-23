@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8dcf6b52ca3ad97d161375eb858309f761580ad3756edf3d5a6dce54b0d115e5"
+            "sha256": "8319b3ebe3fc3313546cf0b261aae31bf5eb26ea14f9f9cd2f35dabf58102494"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -23,6 +23,10 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==0.21.4"
+        },
+        "littlekv": {
+            "editable": true,
+            "path": "."
         },
         "python-engineio": {
             "hashes": [
