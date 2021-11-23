@@ -9,6 +9,7 @@ verify_ssl = true
 python-socketio = "*"
 toml = "*"
 littlekv = {editable = true, path = "."}
+eventlet = "*"
 
 [requires]
 python_version = "3.6"
