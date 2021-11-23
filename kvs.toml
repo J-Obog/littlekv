@@ -4,4 +4,4 @@ host = "localhost"
 
 [FileSys]
 filedir = "data"
-filename = "dump.kv"
+filename = "dump.kvs"
