@@ -4,4 +4,4 @@ client = socketio.Client()
 
 @client.on('cmd_reply')
 def handle_response(data):
-    pass
+    print(f"\n{data['res']}")
