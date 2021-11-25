@@ -1,14 +1,12 @@
 import socketio
 
-def create_server_conn():
-    server = socketio.Server()
-    
-    @server.event
-    def connect(sid, environ):
-        print(sid, 'connected')
+server = socketio.Server()
+web = socketio.WSGIApp(server)
 
-    @server.event
-    def disconnect(sid, environ):
-        print(sid, 'disconnected')
+@server.event
+def connect(sid, environ):
+    print('Welcome', sid)
 
-    return server
+@server.event
+def disconnect(sid):
+    print('Goodbye', sid)
