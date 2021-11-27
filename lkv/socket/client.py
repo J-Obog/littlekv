@@ -4,4 +4,6 @@ client = socketio.Client()
 
 @client.on('cmd_reply')
 def handle_response(data):
-    print(f"\n{data['res']}")
+    print(data['res'])
+
+client.connect('ws://localhost:9876')
