@@ -1,5 +1,5 @@
 import socketio
-from lkv.utils import parse_config
+from lkv.socket.config import *
 
 client = socketio.Client()
 
@@ -7,8 +7,4 @@ client = socketio.Client()
 def handle_response(data):
     print(data['res'])
 
-cfg = parse_config()
-host = cfg['Connection']['host']
-port = cfg['Connection']['port']
-
-client.connect(f'ws://{host}:{port}', transports='websocket')
+client.connect(f'ws://{HOST}:{PORT}', transports='websocket')
