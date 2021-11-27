@@ -1,6 +1,6 @@
 [Connection]
 port = "9876"
-host = "localhost"
+host = "127.0.0.1"
 
 [FileSys]
 filedir = "data"

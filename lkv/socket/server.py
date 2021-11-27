@@ -1,7 +1,7 @@
 import socketio
 from lkv.store import KVStore
 
-server = socketio.Server()
+server = socketio.Server(always_connect=True, allow_upgrades=False)
 global_store = KVStore()
 
 @server.event

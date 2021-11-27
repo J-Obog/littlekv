@@ -2,7 +2,7 @@ from lkv.socket.client import client
 import time
 import typer
 
-DELAY_TIMEOUT = 0.5
+DELAY_TIMEOUT = 0.25
 app = typer.Typer()
 
 @app.command('set')
