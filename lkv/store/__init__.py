@@ -28,15 +28,15 @@ class KVStore:
 
     """ API """
     def getk(self, key) -> Optional[str]:
-        return self.kv.get(key, None)
+        return self.__kv.get(key, None)
 
     def setk(self, key, val) -> None:
-        self.kv[key] = val
+        self.__kv[key] = val
         self.__write_keys()
 
     def delk(self, key) -> None:
         if self.getk(key) != None:
-            self.kv.pop(key) 
+            self.__kv.pop(key) 
             self.__write_keys()
 
     def countk(self) -> int:

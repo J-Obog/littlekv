@@ -23,15 +23,24 @@ def get_key(sid, data):
 
 @server.on('set')
 def set_key(sid, data):
-    res = store.setk(data['key'], data['val'])
-    server.emit('cmd_reply', {'res': res})
+    try:
+        store.setk(data['key'], data['val'])
+        server.emit('cmd_reply', {'res': 'OK'})
+    except Exception as e:
+        server.emit('cmd_reply', {'res': str(e)})
 
 @server.on('del')
 def del_key(sid, data):
-    res = store.delk(data['key'])
-    server.emit('cmd_reply', {'res': res})
+    try:
+        store.delk(data['key'])
+        server.emit('cmd_reply', {'res': 'OK'})
+    except Exception as e:
+        server.emit('cmd_reply', {'res': str(e)})
 
 @server.on('count')
 def count_keys(sid, data):
-    res = store.countk()
-    server.emit('cmd_reply', {'res': res})
+    try:
+        res = store.countk()
+        server.emit('cmd_reply', {'res': res})
+    except Exception as e:
+        server.emit('cmd_reply', {'res': str(e)})
