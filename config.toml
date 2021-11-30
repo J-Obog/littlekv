@@ -3,5 +3,4 @@ port = "9876"
 host = "127.0.0.1"
 
 [FileSys]
-filedir = "data"
-filename = "dump.kvs"
+dirname = "data"

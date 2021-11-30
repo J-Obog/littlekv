@@ -1,40 +1,43 @@
 from typing import Dict, Optional
+from lkv.config import STORE_PATH
+import os
 import toml
 
 class KVStore:
-    def __init__(self, path = None) -> None:
-        self.fp: str = path
-        self.kv: Dict[str, str] = {}
-        
-        if path: 
-            self._kvs_to_dict()
+    def __init__(self, path: Optional[str] = None) -> None:
+        self.__basepath: str = path or STORE_PATH
+        self.__filepath: str = os.path.join(self.__basepath, 'dump.kv')
+        self.__kv: Dict[str, str] = {}
 
-    def _dict_to_kvs(self) -> None:
-        with open(self.fp, 'w') as f:
-            f.write(toml.dumps(self.kv))
-                
-    def _kvs_to_dict(self) -> None:
-        with open(self.fp, 'r') as f:
-            self.kv = toml.loads(f.read())
+        if not os.path.exists(self.__basepath): 
+            os.mkdir(self.__basepath)
 
-    def init_store(self, path) -> None:
-        self.fp = path
-        self._kvs_to_dict()
+        if not os.path.exists(self.__filepath):
+            open(self.__filepath, 'w+').close()
+        else:
+            self.__read_keys()
 
+    """ Helpers """
+    def __read_keys(self) -> None:
+        with open(self.__filepath, 'r') as kvfile:
+            self.__kv = toml.loads(kvfile.read())
+
+    def __write_keys(self) -> None:
+        with open(self.__filepath, 'w') as kvfile:
+            kvfile.write(toml.dumps(self.__kv))
+
+    """ API """
     def getk(self, key) -> Optional[str]:
         return self.kv.get(key, None)
 
-    def setk(self, key, val) -> int:
+    def setk(self, key, val) -> None:
         self.kv[key] = val
-        self._dict_to_kvs()
-        return 1
+        self.__write_keys()
 
-    def delk(self, key) -> int:
+    def delk(self, key) -> None:
         if self.getk(key) != None:
             self.kv.pop(key) 
-            self._dict_to_kvs()
-            return 1
-        return 0
+            self.__write_keys()
 
     def countk(self) -> int:
-        return len(self.kv.keys())
+        return len(self.__kv.keys())

@@ -15,8 +15,11 @@ def disconnect(sid):
 
 @server.on('get')
 def get_key(sid, data):
-    res = store.getk(data['key'])
-    server.emit('cmd_reply', {'res': res})
+    try:
+        res = store.getk(data['key'])
+        server.emit('cmd_reply', {'res': res})
+    except Exception as e:
+        server.emit('cmd_reply', {'res': str(e)})
 
 @server.on('set')
 def set_key(sid, data):

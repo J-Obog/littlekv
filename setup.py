@@ -8,5 +8,10 @@ setup(
     author='JObog',
     author_email='jobogbaimhe@gmail.com',
     license='MIT',
-    packages=find_packages(exclude=['tests', 'examples'])
+    packages=find_packages(exclude=['tests', 'examples']),
+    entry_points={
+        'console_scripts': [
+            'lkv-cli = lkv.cli.cli:main',
+        ]
+    }
 )
