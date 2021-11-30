@@ -1,6 +1,6 @@
 # Little KV
 
-Little KV (LKV) is a lightweight, key-value store (think Redis, Couchbase on a much smaller scale) written in Python that leverages in-memory storage to maximize read/write times. LKV also uses websocketing for client-server communication in order to minimize low latency.
+Little KV (LKV) is a lightweight, key-value store (think Redis, Couchbase on a much smaller scale) written in Python that leverages in-memory storage to minimize read/write times. LKV also uses websocketing for client-server communication in order to minimize latency.
 
 ## Setup
 
