@@ -2,9 +2,8 @@ from socketio import Client
 from typing import List
 
 def get_key(params: List[str], c: Client, cmd_name: str):
-    print('It works!')
-    #k = params[0]
-    #c.emit(cmd_name, {'key': k})
+    k = params[0]
+    c.emit(cmd_name, {'key': k})
 
 def set_key(params: List[str], c: Client, cmd_name: str):
     k = params[0]
