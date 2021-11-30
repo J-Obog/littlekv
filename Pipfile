@@ -11,7 +11,6 @@ toml = "*"
 littlekv = {editable = true, path = "."}
 eventlet = "*"
 requests = "*"
-typer = "*"
 pytest = "*"
 
 [requires]
