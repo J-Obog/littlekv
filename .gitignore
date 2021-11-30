@@ -139,7 +139,7 @@ cython_debug/
 
 # Project-specific
 data/
-kvs.toml
+config.toml
 
 # Misc
 .vscode/
