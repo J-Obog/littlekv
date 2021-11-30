@@ -8,7 +8,6 @@ from lkv.cli.errors import (
     NoCommandError,
     ConnError
 )
-
 import time
 import sys
 

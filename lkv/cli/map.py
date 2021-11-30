@@ -6,4 +6,5 @@ cmd_table = {
     'del': (1, delete_key), 
     'count': (0, count_keys),
     'ping': (0, ping_server),
+    'keys': (1, match_keys),
 }

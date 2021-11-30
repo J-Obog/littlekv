@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 from lkv.config import STORE_PATH
 import os
 import toml
@@ -27,8 +27,8 @@ class KVStore:
             kvfile.write(toml.dumps(self.__kv))
 
     """ API """
-    def getk(self, key) -> Optional[str]:
-        return self.__kv.get(key, None)
+    def getk(self, key = None) -> Union[Optional[str], Dict[str, str]]:
+        return self.__kv.get(key, None) if key else self.__kv
 
     def setk(self, key, val) -> None:
         self.__kv[key] = val

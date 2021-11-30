@@ -45,6 +45,18 @@ def count_keys(sid, data):
     except Exception as e:
         server.emit('cmd_reply', {'res': str(e)})
 
+@server.on('keys')
+def match_keys(sid, data):
+    try:
+        res = ''
+        for pair in store.getk().items():
+            res += f'{pair[0]}\t{pair[1]}\n'
+
+        server.emit('cmd_reply', {'res': res})
+    except Exception as e:
+        server.emit('cmd_reply', {'res': str(e)})
+
 @server.on('ping')
 def ping_req(sid, data):
     server.emit('cmd_reply', {'res': 'PONG'})
+
