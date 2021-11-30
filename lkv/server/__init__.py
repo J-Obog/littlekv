@@ -44,3 +44,7 @@ def count_keys(sid, data):
         server.emit('cmd_reply', {'res': res})
     except Exception as e:
         server.emit('cmd_reply', {'res': str(e)})
+
+@server.on('ping')
+def ping_req(sid, data):
+    server.emit('cmd_reply', {'res': 'PONG'})

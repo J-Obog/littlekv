@@ -16,3 +16,6 @@ def delete_key(params: List[str], c: Client, cmd_name: str):
 
 def count_keys(params: List[str], c: Client, cmd_name: str):
     c.emit(cmd_name, {})
+
+def ping_server(params: List[str], c: Client, cmd_name: str):
+    c.emit(cmd_name, {})
