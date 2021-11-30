@@ -1,6 +1,7 @@
 from lkv.cli.map import cmd_table
-from lkv.socket.client import client
+from lkv.client import client
 from lkv.config import HOST, PORT
+import time
 import sys
 
 def main():
@@ -26,6 +27,7 @@ def main():
 
     fn(params, client, op)
 
+    time.sleep(0.5)
     client.disconnect()
 
 if __name__ == '__main__':

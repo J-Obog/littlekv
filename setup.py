@@ -12,6 +12,7 @@ setup(
     entry_points={
         'console_scripts': [
             'lkv-cli = lkv.cli.cli:main',
+            'lkv-server = lkv.server.run:main'
         ]
     }
 )
