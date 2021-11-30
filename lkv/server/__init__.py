@@ -1,7 +1,7 @@
 import socketio
 from lkv.store import KVStore
 
-server = socketio.Server(always_connect=True, allow_upgrades=False)
+server = socketio.Server(async_mode='gevent')
 web_server = socketio.WSGIApp(server)
 store = KVStore()
 

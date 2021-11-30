@@ -12,6 +12,8 @@ littlekv = {editable = true, path = "."}
 eventlet = "*"
 requests = "*"
 pytest = "*"
+gevent = "*"
+gevent-websocket = "*"
 
 [requires]
 python_version = "3.6"
