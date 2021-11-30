@@ -1,34 +1,49 @@
 from lkv.cli.map import cmd_table
 from lkv.client import client
 from lkv.config import HOST, PORT
+from socketio.exceptions import ConnectionError
+from lkv.cli.errors import (
+    CliError,
+    WrongArityError,
+    NoCommandError,
+    ConnError
+)
+
 import time
 import sys
 
-def main():
-    client.connect(f'ws://{HOST}:{PORT}', transports='websocket') 
-    args = sys.argv
+def main() -> None:
+    try:
+        try:
+            client.connect(f'ws://{HOST}:{PORT}', transports='websocket') 
+        except ConnectionError:
+            raise ConnError(HOST, PORT)
 
-    if len(args) == 1:
-        quit()
+        args = sys.argv
 
-    op = args[1]
-    params = args[2:]
-    cmd_pair = cmd_table.get(op, None) 
+        if len(args) == 1:
+            quit()
 
-    if not cmd_pair:
-        print(f'ERROR => Unknown command {op}')
-        exit(873)
+        op = args[1]
+        params = args[2:]
+        cmd_pair = cmd_table.get(op, None) 
 
-    arity, fn = cmd_pair
-    
-    if len(params) != arity:
-        print(f'ERROR => Wrong number of arguments to {op} command')
-        exit(683)
+        if not cmd_pair:
+            raise NoCommandError(op) 
 
-    fn(params, client, op)
+        arity, fn = cmd_pair
+        
+        if len(params) != arity:
+            raise WrongArityError(op)
 
-    time.sleep(0.5)
-    client.disconnect()
+        fn(params, client, op)
+    except CliError as e:
+        print(str(e))
+        exit(e.code)
+    finally:
+        time.sleep(0.5)
+        client.disconnect()
+
 
 if __name__ == '__main__':
     main()
