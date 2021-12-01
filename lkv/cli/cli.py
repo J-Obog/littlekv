@@ -1,21 +1,22 @@
-from lkv.cli.map import cmd_table
-from lkv.client import client
+from lkv.cli.mapper import cmd_table
 from lkv.config import HOST, PORT
-from socketio.exceptions import ConnectionError
 from lkv.cli.errors import (
     CliError,
     WrongArityError,
     NoCommandError,
     ConnError
 )
+import socketio
+import socketio.exceptions
 import time
 import sys
 
-def main() -> None:
+def main() -> None: 
+    client = socketio.Client()
     try:
         try:
             client.connect(f'ws://{HOST}:{PORT}', transports='websocket') 
-        except ConnectionError:
+        except socketio.exceptions.ConnectionError:
             raise ConnError(HOST, PORT)
 
         args = sys.argv
@@ -42,7 +43,6 @@ def main() -> None:
     finally:
         time.sleep(0.5)
         client.disconnect()
-
 
 if __name__ == '__main__':
     main()

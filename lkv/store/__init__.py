@@ -1,11 +1,10 @@
 from typing import Dict, Optional, Union
-from lkv.config import STORE_PATH
 import os
 import toml
 
 class KVStore:
-    def __init__(self, path: Optional[str] = None) -> None:
-        self.__basepath: str = path or STORE_PATH
+    def __init__(self, path: str) -> None:
+        self.__basepath: str = path
         self.__filepath: str = os.path.join(self.__basepath, 'dump.kv')
         self.__kv: Dict[str, str] = {}
 
