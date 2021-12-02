@@ -1,5 +1,7 @@
 # Little KV
 
+![Travis CI Badge](https://app.travis-ci.com/J-Obog/littlekv.svg?branch=main)
+
 Little KV (LKV) is a lightweight, key-value store (think Redis, Couchbase on a much smaller scale) written in Python that leverages in-memory storage to minimize read/write times. LKV also uses websocketing for client-server communication in order to minimize latency.
 
 ## Setup
