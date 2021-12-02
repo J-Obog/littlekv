@@ -9,7 +9,7 @@ def launch_client_proc(cmd: str, conn_delay: int = 1) -> Tuple[int, int, str]:
     time.sleep(conn_delay)
     client_proc = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     exit_code = client_proc.wait()
-    output = client_proc.communicate()[0].decode('utf')
+    output = client_proc.communicate()[0].decode('utf-8')
     return (client_proc.pid, exit_code, output)
 
 def launch_server_proc(cmd: str) -> Tuple[int]:

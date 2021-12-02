@@ -22,3 +22,11 @@ def test_no_command():
    kill_server_proc(spid)
    assert ex_code == 0
    assert out.find('Unknown command') != -1
+
+def test_no_errs():
+   spid = launch_server_proc('lkv-server')
+   _, ex_code, out = launch_client_proc('lkv-cli ping')
+   kill_server_proc(spid)
+   assert ex_code == 0
+   assert out.find('ERROR') == -1
+   assert out[:4] == 'PONG'
