@@ -6,12 +6,12 @@ from lkv.cli.errors import (
     NoCommandError,
     ConnError
 )
-import socketio
 import socketio.exceptions
+import socketio
 import time
 import sys
 
-def main() -> None: 
+def main(): 
     client = socketio.Client()
     try:
         try:
