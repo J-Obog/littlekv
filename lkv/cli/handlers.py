@@ -1,7 +1,7 @@
 from socketio import Client
 from typing import List
 
-def handle_command_response(res: any):
+def handle_command_response(res):
     print(res)
 
 def handle_get_key(params: List[str], c: Client, cmd_name: str):
@@ -25,4 +25,7 @@ def handle_match_keys(params: List[str], c: Client, cmd_name: str):
     c.emit(cmd_name, {'pattern': pattern}, callback=handle_command_response)
 
 def handle_ping_server(params: List[str], c: Client, cmd_name: str):
+    c.emit(cmd_name, {}, callback=handle_command_response)
+
+def handle_clear_keys(params: List[str], c: Client, cmd_name: str):
     c.emit(cmd_name, {}, callback=handle_command_response)

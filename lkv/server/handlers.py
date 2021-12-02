@@ -11,7 +11,8 @@ def handle_ping_client(sid: str, data: any) -> str:
     return 'PONG'
 
 def handle_get_key(sid: str, data: any) -> str:
-    return kv_store.getk(data['key'])
+    v = kv_store.getk(data['key'])
+    return v if v != None else '<None>'
 
 def handle_set_key(sid: str, data: any) -> str:
     kv_store.setk(data['key'], data['val'])
@@ -26,3 +27,7 @@ def handle_count_keys(sid: str, data: any) -> int:
  
 def handle_match_keys(sid: str, data: any) -> Dict[str, str]:
     return kv_store.getk()
+
+def handle_clear_keys(sid: str, data: any) -> str:
+    kv_store.cleark()
+    return 'OK'

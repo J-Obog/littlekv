@@ -7,4 +7,5 @@ cmd_table = {
     'count': (0, handle_count_keys),
     'ping': (0, handle_ping_server),
     'keys': (1, handle_match_keys),
+    'clear': (0, handle_clear_keys)
 }
