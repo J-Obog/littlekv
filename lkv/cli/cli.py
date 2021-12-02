@@ -39,7 +39,7 @@ def main():
         fn(params, client, op)
     except CliError as e:
         print(str(e))
-        exit(e.code)
+        
     finally:
         time.sleep(0.5)
         client.disconnect()
