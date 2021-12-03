@@ -9,9 +9,8 @@ def main():
 
     try:
         web_server.serve_forever()
-    except KeyboardInterrupt: 
+    except KeyboardInterrupt:
         print('Server shutting down') 
-    finally:
         web_server.close()
         exit(0)
 
