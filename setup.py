@@ -11,7 +11,7 @@ setup(
     packages=find_packages(exclude=['tests', 'examples']),
     entry_points={
         'console_scripts': [
-            'lkv-cli = lkv.cli.cli:main',
+            'lkv-cli = lkv.cli.run:main',
             'lkv-server = lkv.server.run:main'
         ]
     }

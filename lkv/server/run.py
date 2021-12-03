@@ -10,7 +10,7 @@ def configure_argparser(parser: argparse.ArgumentParser):
     parser.add_argument('-H', '--help', action='help', help='show this help message and exit')
     
 def main():
-    argp = argparse.ArgumentParser(description="LittleKV Server", add_help=False)
+    argp = argparse.ArgumentParser(description='LittleKV Server', add_help=False)
     configure_argparser(argp)
     args = argp.parse_args() 
 
