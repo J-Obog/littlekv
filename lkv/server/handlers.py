@@ -1,33 +1,53 @@
-from typing import Dict
+from typing import List, Dict
 from lkv.server import kv_store
+from lkv.server.exceptions import BadArityError
 
-def handle_client_connected(sid, environ):
-    print(f'Client {sid} connected')
-
-def handle_client_disconected(sid):
-    print(f'Client {sid} disconnected')
-
-def handle_ping_client(sid: str, data: any) -> str:
+def handle_ping_client(cmd: str, params: List[str], param_len: int) -> str:
+    if param_len != 0:
+        raise BadArityError(cmd, param_len, 0)
+    
     return 'PONG'
 
-def handle_get_key(sid: str, data: any) -> str:
-    v = kv_store.getk(data['key'])
+def handle_get_key(cmd: str, params: List[str], param_len: int) -> str:
+    if param_len != 1:
+        raise BadArityError(cmd, param_len, 1)
+    
+    k = params[0]
+    v = kv_store.getk(k)
     return v if v != None else '<None>'
 
-def handle_set_key(sid: str, data: any) -> str:
-    kv_store.setk(data['key'], data['val'])
+def handle_set_key(cmd: str, params: List[str], param_len: int) -> str:
+    if param_len != 2:
+        raise BadArityError(cmd, param_len, 2)
+
+    k = params[0]
+    v = params[1]
+    kv_store.setk(k,v)
     return 'OK'
 
-def handle_del_key(sid: str, data: any) -> str:
-    kv_store.delk(data['key'])
+def handle_del_key(cmd: str, params: List[str], param_len: int) -> str:
+    if param_len != 1:
+        raise BadArityError(cmd, param_len, 1)
+
+    k = params[0]
+    kv_store.delk(k)
     return 'OK'
 
-def handle_count_keys(sid: str, data: any) -> int:
+def handle_count_keys(cmd: str, params: List[str], param_len: int) -> int:
+    if param_len != 0:
+        raise BadArityError(cmd, param_len, 0)
+
     return kv_store.countk()
  
-def handle_match_keys(sid: str, data: any) -> Dict[str, str]:
+def handle_match_keys(cmd: str, params: List[str], param_len: int) -> Dict[str, str]:
+    if param_len != 1:
+        raise BadArityError(cmd, param_len, 1)
+
     return kv_store.getk()
 
-def handle_clear_keys(sid: str, data: any) -> str:
+def handle_clear_keys(cmd: str, params: List[str], param_len: int) -> str:
+    if param_len != 0:
+        raise BadArityError(cmd, param_len, 0)
+
     kv_store.cleark()
     return 'OK'
