@@ -8,15 +8,15 @@ def test_set_and_get():
    spid = launch_server_proc('lkv-server')
    _, c, o = launch_client_proc('lkv-cli clear')
    assert c == 0
-   assert o.find('OK') != -1
+   assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli set foo bar')
    assert c == 0
-   assert o.find('OK') != -1
+   assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli get foo')
    assert c == 0
-   assert o.find('bar') != -1
+   assert o == 'bar'
    kill_server_proc(spid)
 
 
@@ -24,19 +24,19 @@ def test_set_and_del():
    spid = launch_server_proc('lkv-server')
    _, c, o = launch_client_proc('lkv-cli clear')
    assert c == 0
-   assert o.find('OK') != -1
+   assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli set foo bar')
    assert c == 0
-   assert o.find('OK') != -1
+   assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli del foo')
    assert c == 0
-   assert o.find('OK') != -1
+   assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli get foo')
    assert c == 0
-   assert o.find('<None>') != -1
+   assert o == '<None>'
    kill_server_proc(spid)
 
 
@@ -44,18 +44,18 @@ def test_set_and_count():
    spid = launch_server_proc('lkv-server')
    _, c, o = launch_client_proc('lkv-cli clear')
    assert c == 0
-   assert o.find('OK') != -1
+   assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli count')
    assert c == 0
-   assert o.find('0') != -1
+   assert o == '0'
 
    for i in range(5):
       _, c, o = launch_client_proc(f'lkv-cli set key-{i} somevalue')
       assert c == 0
-      assert o.find('OK') != -1
+      assert o == 'OK'
 
    _, c, o = launch_client_proc('lkv-cli count')
    assert c == 0
-   assert o.find('5') != -1
+   assert o == '5'
    kill_server_proc(spid)
