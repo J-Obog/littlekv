@@ -16,7 +16,7 @@ class KVStore:
         else:
             self.__read_keys()
 
-    """ Helpers """
+    """ Storage interface """
     def __read_keys(self):
         with open(self.__filepath, 'r') as kvfile:
             self.__kv = toml.loads(kvfile.read())
@@ -27,7 +27,7 @@ class KVStore:
 
     """ API """
     def getk(self, key = None) -> Union[Optional[str], Dict[str, str]]:
-        return self.__kv.get(key, None) if key else self.__kv
+        return self.__kv.get(key, None) if key else list(self.__kv.keys())
 
     def setk(self, key, val):
         self.__kv[key] = val

@@ -1,5 +1,6 @@
 from typing import List, Dict
 from lkv.store import KVStore
+import re 
 
 def handle_ping_client(params: List[str], store: KVStore) -> str:
     return 'PONG'
@@ -24,7 +25,8 @@ def handle_count_keys(params: List[str], store: KVStore) -> int:
     return store.countk()
  
 def handle_match_keys(params: List[str], store: KVStore) -> Dict[str, str]:
-    return store.getk()
+    p = params[0]
+    return list(filter(lambda k: re.match(p, k), store.getk()))
 
 def handle_clear_keys(params: List[str], store: KVStore) -> str:
     store.cleark()
