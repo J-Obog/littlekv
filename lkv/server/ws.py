@@ -4,6 +4,7 @@ from lkv.server.mapper import command_table
 from lkv.store import KVStore
 from lkv.server.exceptions import (
     LKVError,
+    BadArityError,
     NoCommandError,
     NoCommandProvidedError,
     NoParamsProvidedError
@@ -43,11 +44,16 @@ class LKVSockServer(socketio.Server):
 
             cmd = data['cmd']
             params = data['params']
-            cmd_handler = command_table.get(cmd, None)
+            cmd_handler, arity = command_table.get(cmd, None)
             
             if not cmd_handler: 
                 raise NoCommandError(cmd) 
+            
+            plen = len(params)
+            
+            if plen != arity:
+                raise BadArityError(cmd, plen, arity)     
 
-            return (cmd_handler(cmd, params, len(params), self.__kv_store), None)
+            return (cmd_handler(params, self.__kv_store), None)
         except LKVError as e:
             return (None, str(e))
