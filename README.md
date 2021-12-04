@@ -29,3 +29,36 @@ The required packages are listed in the Pipfile. To install those dependencies, 
 ```
 pipenv install
 ```
+
+## Running stuff
+
+#### Default configurations
+
+The [lkv.config](/lkv.config) toml file holds informations regarding the project environment such the default host and port for the server to run on.
+You can edit the content and provide your own custom default settings.
+
+#### Running the server
+
+To run the LKV server with the default configurations, simply run:
+
+```
+lkv-server
+```
+
+You can also pass in additional parameters through the command line:
+
+```
+optional arguments:
+  -h HOST, --host HOST  host server should run on
+  -p PORT, --port PORT  port server should run on
+  -d KV_DIR, --dir KV_DIR
+                        directory of target kv file
+  -s KV_SRC, --src KV_SRC
+                        name of target kv file
+```
+
+Example:
+
+```
+lkv-server -p 4567 -d my_store_path
+```
