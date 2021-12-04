@@ -30,7 +30,7 @@ The required packages are listed in the Pipfile. To install those dependencies, 
 pipenv install
 ```
 
-## Running stuff
+## Running LKV
 
 #### Default configurations
 
@@ -48,6 +48,10 @@ lkv-server
 You can also pass in additional parameters through the command line:
 
 ```
+usage: lkv-server [-h HOST] [-p PORT] [-d KV_DIR] [-s KV_SRC] [-H]
+
+LittleKV Server
+
 optional arguments:
   -h HOST, --host HOST  host server should run on
   -p PORT, --port PORT  port server should run on
@@ -55,10 +59,52 @@ optional arguments:
                         directory of target kv file
   -s KV_SRC, --src KV_SRC
                         name of target kv file
+  -H, --help            show this help message and exit
 ```
 
-Example:
+Example usage:
 
 ```
-lkv-server -p 4567 -d my_store_path
+$ lkv-server
+Server listening @ 127.0.0.1 on port 9876
+```
+
+#### Running the CLI
+
+LittleKV comes equipped with a command line interface that you can use to run commands.
+To run the LKV CLI with the default configurrations, simply run:
+
+```
+lkv-cli
+```
+
+You can also pass in additional parameters through the command line:
+
+```
+usage: lkv-cli [-h HOST] [-p PORT] [-H] command [command ...]
+
+LittleKV CLI
+
+positional arguments:
+  command               lkv commands
+
+optional arguments:
+  -h HOST, --host HOST  host client should connect to
+  -p PORT, --port PORT  port client should connect to
+  -H, --help            show this help message and exit
+```
+
+Example usage:
+
+```
+$ lkv-cli ping
+PONG
+$ lkv-cli set foo bar
+OK
+$ lkv-cli get foo
+bar
+$ lkv-cli clear
+OK
+$ lkv-cli count
+0
 ```
