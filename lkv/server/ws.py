@@ -44,7 +44,7 @@ class LKVSockServer(socketio.Server):
 
             cmd = data['cmd']
             params = data['params']
-            cmd_handler, arity = command_table.get(cmd, None)
+            cmd_handler, arity = command_table.get(cmd, (None, None))
             
             if not cmd_handler: 
                 raise NoCommandError(cmd) 
