@@ -1,4 +1,3 @@
-from lkv import cli
 from lkv.config import HOST, PORT
 from socketio.exceptions import ConnectionError
 import socketio
@@ -7,8 +6,8 @@ import time
 
 def configure_argparser(parser: argparse.ArgumentParser):
     parser.add_argument('command', nargs='+', help='lkv commands')
-    parser.add_argument('-h', '--host', dest='host', type=str, default=None, help='host client should connect to')
-    parser.add_argument('-p', '--port', dest='port', type=int, default=None, help='port client should connect to')
+    parser.add_argument('-h', '--host', dest='host', type=str, default=HOST, help='host client should connect to')
+    parser.add_argument('-p', '--port', dest='port', type=int, default=PORT, help='port client should connect to')
     parser.add_argument('-H', '--help', action='help', help='show this help message and exit')
 
 def response_to_stdout(*args):
@@ -22,8 +21,8 @@ def main():
     configure_argparser(argp)
     args = argp.parse_args() 
     
-    host = args.host or HOST
-    port = args.port or PORT
+    host = args.host
+    port = args.port
     command = args.command
     op = command[0]
     params = command[1:]
