@@ -6,6 +6,8 @@ Little KV (LKV) is a lightweight key-value store (think Redis, Couchbase on a mu
 
 ![LKV Architecture](/assets/lkv_architecture.svg)
 
+Full list of supported commands: [commands.md](/docs/commands.md)
+
 ## Setup
 
 #### Cloning the repo
