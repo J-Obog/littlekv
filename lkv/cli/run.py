@@ -1,14 +1,7 @@
-from lkv.config import HOST, PORT
 from socketio.exceptions import ConnectionError
+from lkv.flags import parse_cli_args
 import socketio
-import argparse
 import time
-
-def configure_argparser(parser: argparse.ArgumentParser):
-    parser.add_argument('command', nargs='+', help='lkv commands')
-    parser.add_argument('-h', '--host', dest='host', type=str, default=HOST, help='host client should connect to')
-    parser.add_argument('-p', '--port', dest='port', type=int, default=PORT, help='port client should connect to')
-    parser.add_argument('-H', '--help', action='help', help='show this help message and exit')
 
 def response_to_stdout(*args):
     res = args[0]
@@ -17,9 +10,7 @@ def response_to_stdout(*args):
     print(msg)
 
 def main(): 
-    argp = argparse.ArgumentParser(description='LittleKV CLI', add_help=False)
-    configure_argparser(argp)
-    args = argp.parse_args() 
+    args = parse_cli_args()
     
     host = args.host
     port = args.port
