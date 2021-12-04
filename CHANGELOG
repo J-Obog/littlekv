@@ -1,0 +1,10 @@
+Version Scheme
+ - v{X}.{Y}
+ - X = Major release (likely breaking changes)
+ - Y = Minor release (mainly non-breaking changes)
+ - Branches will be made to hold the latest release and maintained for hotfixes
+
+
+v1.0 ()
+- Initial release
+
