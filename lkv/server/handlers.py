@@ -5,7 +5,7 @@ import re
 def handle_ping_client(params: List[str], store: KVStore) -> str:
     return 'PONG'
 
-def handle_get_key(params: List[str], store: KVStore) -> str:
+def handle_get_key(params: List[str], store: KVStore) -> any:
     k = params[0]
     v = store.getk(k)
     return v if v != None else '<None>'
