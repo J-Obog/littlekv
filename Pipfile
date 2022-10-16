@@ -14,6 +14,8 @@ requests = "*"
 pytest = "*"
 gevent = "*"
 gevent-websocket = "*"
+flask = "*"
+flask-restful = "*"
 
 [requires]
 python_version = "3.10"
