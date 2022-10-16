@@ -7,6 +7,7 @@ class LittleKVManager:
         self._store = store
         self._hash_map = store.read()
         self._map_lock = Lock()
+        self._store_lock = Lock()
 
     def r_locked(self, func: Callable):
         def wraps(*args, **kwargs):
@@ -18,7 +19,9 @@ class LittleKVManager:
         def wraps(*args, **kwargs):
             with self._map_lock:
                 func(*args, **kwargs)
-                self._store.write(dict(self._hash_map))
+                with self._store_lock:
+                    data = dict(self._hash_map)
+                    self._store.write(data)
         return wraps
 
     @r_locked
