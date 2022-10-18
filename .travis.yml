@@ -3,7 +3,7 @@ language: python
 cache: pip
 
 install:
-  - pip install pipenv --upgrade-strategy=only-if-needed
+  - pip install pipenv
   - pipenv install
 
 script:
