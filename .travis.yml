@@ -13,4 +13,4 @@ install:
   - pipenv install
 
 script:
-  - pytest
+  - pipenv run pytest
