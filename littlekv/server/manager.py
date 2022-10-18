@@ -1,5 +1,5 @@
 from littlekv.store import Store
-from typing import Callable, Dict
+from typing import Dict
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 
