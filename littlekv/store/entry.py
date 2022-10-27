@@ -5,6 +5,7 @@ from enum import Enum
 class Operation(Enum):
     SET = "SET"
     DELETE = "DELETE"
+    FLUSH = "FLUSH"
 
 @dataclass
 class MutationEntry:

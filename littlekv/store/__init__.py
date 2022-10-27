@@ -1,1 +1,0 @@
-from littlekv.store.store import Store
