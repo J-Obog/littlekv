@@ -1,19 +1,23 @@
+from tracemalloc import Snapshot
+from littlekv import store
 from littlekv.store import Store
-from typing import Dict
+from typing import Callable, Dict
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 
 class LittleKVManager:
-    def __init__(self, store: Store):
+    def __init__(self, store: Store, write_async=True):
         self._store = store
+        self._write_async = write_async
         self._hash_map = store.read()
         self._map_lock = Lock()
         self._store_lock = Lock()
         self._pool = ThreadPoolExecutor()
 
-    def _write(self, snapshot: Dict[str,str]):
+    def _write(self, data: Dict[str,str]):
         with self._store_lock:
-            self._store.write(snapshot)
+            self._store.write(data)
 
     def get(self, key: str) -> str:
         with self._map_lock:
