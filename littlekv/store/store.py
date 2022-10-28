@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
-from littlekv.store.entry import MutationEntry
+from littlekv.store.mutation import Mutation
 
 class Store(ABC):
     @abstractmethod
-    def read(self) -> List[MutationEntry]:
+    def read(self) -> List[Mutation]:
         ...
 
     @abstractmethod
-    def write(self, entry: MutationEntry):
+    def write(self, entry: Mutation):
         ...

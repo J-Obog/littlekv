@@ -8,7 +8,7 @@ class Operation(Enum):
     FLUSH = "FLUSH"
 
 @dataclass
-class MutationEntry:
+class Mutation:
     operation: Operation
     params: List[any]
     timestamp: int

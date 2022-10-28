@@ -1,11 +1,12 @@
-from ast import arg
+import time
 from typing import List, Dict
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
-from littlekv.store.entry import MutationEntry, Operation
+from littlekv.store.mutation import Mutation, Operation
 from littlekv.store.store import Store
 
-def map_from_entries(entries: List[MutationEntry]) -> Dict[str,str]:
+
+def map_from_entries(entries: List[Mutation]) -> Dict[str,str]:
     hash_map = dict()
     sorted_entries = sorted(entries, key=lambda entry: entry.timestamp)
     
@@ -27,20 +28,17 @@ def map_from_entries(entries: List[MutationEntry]) -> Dict[str,str]:
 
 
 class LittleKVManager:
-    def __init__(self, store: Store, write_async=True):
+    def __init__(self, store: Store):
         self._store = store
-        self._write_async = write_async
         self._hash_map = map_from_entries(store.read())
+        self._pool = ThreadPoolExecutor()
         self._map_lock = Lock()
         self._store_lock = Lock()
-        self._pool = ThreadPoolExecutor()
 
-    def _init_map(self):
-        pass       
-
-    def _write(self, data: Dict[str,str]):
+    def _save(self, op: Operation, args: List[any]):
         with self._store_lock:
-            self._store.write(data)
+            now = int(time.time())
+            self._store.write(Mutation(op, args, now))
 
     def get(self, key: str) -> str:
         with self._map_lock:
@@ -53,14 +51,14 @@ class LittleKVManager:
     def set(self, key: str, value: str):
         with self._map_lock:
             self._hash_map[key] = value
-            self._pool.submit(self._write, dict(self._hash_map))
+            self._pool.submit(self._save, Operation.SET, [key, value])
 
     def delete(self, key: str):
         with self._map_lock:
             self._hash_map.pop(key)
-            self._pool.submit(self._write, dict(self._hash_map))
+            self._pool.submit(self._save, Operation.DELETE, [key])
 
     def delete_all(self):
         with self._map_lock:
-            self._hash_map = dict()
-            self._pool.submit(self._write, dict(self._hash_map))
+            self._hash_map.clear()
+            self._pool.submit(self._save, Operation.FLUSH, [])
