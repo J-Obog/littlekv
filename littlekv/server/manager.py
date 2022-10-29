@@ -44,10 +44,6 @@ class LittleKVManager:
         with self._map_lock:
             return self._hash_map.get(key, None)
 
-    def get_all(self) -> Dict[str,str]:
-        with self._map_lock:
-            return dict(self._hash_map)
-
     def set(self, key: str, value: str):
         with self._map_lock:
             self._hash_map[key] = value
