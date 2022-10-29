@@ -1,5 +1,5 @@
 import time
-from typing import List, Dict
+from typing import List, Dict, Optional
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 from littlekv.store.mutation import Mutation, Operation
@@ -40,21 +40,22 @@ class LittleKVManager:
             now = int(time.time())
             self._store.write(Mutation(op, args, now))
 
-    def get(self, key: str) -> str:
+    def get(self, key: str) -> Optional[str]:
         with self._map_lock:
             return self._hash_map.get(key, None)
 
     def set(self, key: str, value: str):
         with self._map_lock:
-            self._hash_map[key] = value
             self._pool.submit(self._save, Operation.SET, [key, value])
+            self._hash_map[key] = value
 
     def delete(self, key: str):
         with self._map_lock:
-            self._hash_map.pop(key)
             self._pool.submit(self._save, Operation.DELETE, [key])
-
+            self._hash_map.pop(key)
+            
     def delete_all(self):
         with self._map_lock:
-            self._hash_map.clear()
             self._pool.submit(self._save, Operation.FLUSH, [])
+            self._hash_map.clear()
+            
